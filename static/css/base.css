@@ -1,0 +1,37 @@
+body {
+    font-family: 'Source Sans 3', serif;
+    font-size: 18px;
+}
+
+header {
+    border-bottom: 2px solid #999;
+    display: flex;
+}
+
+header h1 a {
+    color: rgb(80, 80, 209);
+    text-decoration: none;
+}
+
+header h4 a {
+    color: rgb(98, 103, 136);
+    text-decoration: none !important;
+}
+
+.nav-left {
+    margin-right: auto;
+}
+
+.nav-right {
+    display: flex;
+    padding-top: 2rem;
+    padding-right: 2rem;
+}
+.nav-right a {
+    display: flex;
+    padding: 2px 5px;
+    text-decoration: none;
+}
+.nav-right a:hover{
+    text-decoration: underline;
+}

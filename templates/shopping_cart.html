@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="cart-wrapper">
+  <h1 class="cart-title">🛒Shopping Cart</h1>
+
+  <form action="{% url 'Buy' %}" method="post">
+    {% csrf_token %}
+
+    <div class="cart-items">
+      {% for shopping_cart in cart_items %}
+        {% if request.session.user_ID == shopping_cart.user_ID.user_ID %}
+          <div class="cart-item">
+            <div class="item-name">{{ shopping_cart.product.name }}</div>
+            <div class="item-price">$ {{ shopping_cart.product.price }}</div>
+            <div class="item-qty">
+              <input type="number" name="quantities_{{ shopping_cart.id }}" class="qty-input"
+              value="{{ shopping_cart.quantity }}" min="1"
+              data-price="{{ shopping_cart.product.price }}">
+            </div>
+            <div class="item-actions">
+              <button type="submit" formaction="{% url 'DeleteFromCart' shopping_cart.id %}" formmethod="post" class="delete-btn">❌</button>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="cart-footer">
+      <div class="cart-total">Total: ${{ total }}</div>
+      <button type="submit" class="buy-btn">Buy</button>
+    </div>
+  </form>
+
+
+  {% if messages %}
+    {% for message in messages %}
+      <script>  
+          alert("{{ message|escapejs }}");
+      </script>
+    {% endfor %}
+  {% endif %}
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const qtyInputs = document.querySelectorAll(".qty-input");
+  const totalDisplay = document.querySelector(".cart-total");
+
+  function updateTotal() {
+    let total = 0;
+    qtyInputs.forEach(input => {
+      const price = parseFloat(input.dataset.price);
+      const qty = parseInt(input.value) || 0;
+      total += price * qty;
+    });
+    totalDisplay.textContent = "Total: $" + total.toFixed(0);
+  }
+
+  qtyInputs.forEach(input => {
+    input.addEventListener("input", updateTotal);
+  });
+
+  updateTotal(); // 初始化總額
+});
+</script>
+
+{% endblock content %}

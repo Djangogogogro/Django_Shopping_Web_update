@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/orders.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="order-wrapper">
+
+  {% if 'S' in request.session.user_ID or 'E' in request.session.user_ID %}
+    <a class="order-link" href="{% url 'Order Manager' %}">🛠️ Sales Dashboard</a>
+  {% endif %}
+
+  {% for order in display_orders %}
+    <div class="order-card">
+      <h3 class="order-header">Order on {{ order.date|date:"F d, Y" }}</h3>
+      <p class="order-name">👤 {{ order.name_line }}</p>
+
+      <ul class="order-items">
+        {% for line in order.product_lines %}
+          <li>{{ line }}</li>
+        {% endfor %}
+      </ul>
+
+      <div class="order-total">💰 Total: ${{ order.total }}</div>
+    </div>
+  {% empty %}
+    <p>No orders found.</p>
+  {% endfor %}
+</div>
+{% endblock content %}

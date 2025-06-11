@@ -1,0 +1,4 @@
+Django==4.2.9
+faiss_cpu==1.11.0
+numpy==2.2.6
+sentence_transformers==4.1.0
